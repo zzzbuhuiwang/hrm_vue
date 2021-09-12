@@ -19,6 +19,7 @@ import './mock' // simulation data
 import dashboard from '@/module-dashboard/' // 面板
 import demo from '@/module-demo/' // 面板
 import company from '@/module-hrm-company/' // 面板
+import org from '@/module-hrm-org/' // 面板
 
 import tools from './utils/common.js'
 Vue.prototype.$tools = tools
@@ -27,6 +28,7 @@ Vue.use(tools)
 Vue.use(dashboard, store)
 Vue.use(demo, store)
 Vue.use(company, store)
+Vue.use(org, store)
 
 /*
 * 注册 - 组件
