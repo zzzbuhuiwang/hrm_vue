@@ -10,14 +10,21 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '',
     proxyTable: {
-      //企业信息请求的远程服务
-      // '/api/company': {
-      //   target: 'http://localhost:9001/company/',
-      //   changeOrigin: true,
-      //   pathRewrite: {
-      //     '^/api/company': ''
-      //   }
-      // }
+      // 企业信息请求的远程服务
+      '/api/company': {
+        target: 'http://localhost:9001/company/',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api/company': ''
+        }
+      },
+      '/api/sys': {
+        target: 'http://localhost:9002/sys/',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api/sys': ''
+        }
+      }
     },
 
     // Various Dev Server settings
