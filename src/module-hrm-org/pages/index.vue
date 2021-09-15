@@ -2,28 +2,28 @@
   <div class="dashboard-container">
     <div class="app-container">
       <el-card shadow="never">
-            <div class='organization-index'>
-              <div class='organization-index-top'>
-                <div class='main-top-title'>
-                  <el-tabs v-model="activeName">
-                    <el-tab-pane label="组织结构" name="first"></el-tab-pane>
-                    <div class="el-tabs-report">
-                      <a class="el-button el-button--primary el-button--mini" title="导出" >导入</a>
-                      <a class="el-button el-button--primary el-button--mini" title="导出" >导出</a>
-                    </div>
-                  </el-tabs>
+        <div class='organization-index'>
+          <div class='organization-index-top'>
+            <div class='main-top-title'>
+              <el-tabs v-model="activeName">
+                <el-tab-pane label="组织结构" name="first"></el-tab-pane>
+                <div class="el-tabs-report">
+                  <a class="el-button el-button--primary el-button--mini" title="导出" >导入</a>
+                  <a class="el-button el-button--primary el-button--mini" title="导出" >导出</a>
                 </div>
-              </div>
-              <div style="overflow: scroll;white-space:nowrap"  class="treBox">
-                <div class="treeCon clearfix">
+              </el-tabs>
+            </div>
+          </div>
+          <div style="overflow: scroll;white-space:nowrap"  class="treBox">
+            <div class="treeCon clearfix">
                     <span>
                       <i class="fa fa-university" aria-hidden="true"></i>
-                      <span ><strong>企业名称</strong></span>
+                      <span ><strong>{{departData.companyName}}</strong></span>
                     </span>
-                    <div class="fr">
+              <div class="fr">
                       <span class="treeRinfo">
                         <div class="treeRinfo">
-                          <span>负责人</span>
+                          <span>{{departData.companyManage}}</span>
                           <span>在职  <em class="colGreen" title="在职人数">---</em>&nbsp;&nbsp;(<em class="colGreen" title="正式员工">---</em>&nbsp;/&nbsp;<em class="colRed" title="非正式员工">---</em>)</span>
                         </div>
                         <div class="treeRinfo">
@@ -42,27 +42,73 @@
                           </el-dropdown>
                         </div>
                       </span>
-                    </div>
-                  </div>
-
-                  <!--
-                    构造树形列表
-                      叶子 <i class="fa fa-male"></i>
-                      非叶子
-                        展开 <i class="fa fa-minus-square-o">
-                        闭合 <i class="fa fa-plus-square-o">
-                    <div class="generalClass" slot-scope="{node,data}" style="width:99%">
-                  -->
-
               </div>
             </div>
+
+            <!--
+              构造树形列表
+                叶子 <i class="fa fa-male"></i>
+                非叶子
+                  展开 <i class="fa fa-minus-square-o">
+                  闭合 <i class="fa fa-plus-square-o">
+              <div class="generalClass" slot-scope="{node,data}" style="width:99%">
+            -->
+            <el-tree :props="{label:'name'}" :data="depts" node-key="id" default-expand-all>
+              <!--
+                node : 是否展开，是否叶子节点
+                data：部门对象
+                      id，name
+               -->
+              <div class="generalClass" slot-scope="{node,data}" style="width:99%">
+                        <span>
+                           <i v-if="node.isLeaf" class="fa fa-male"></i>
+                           <i v-else :class="node.expanded?'fa fa-minus-square-o':'fa fa-plus-square-o'"></i>
+                          <span>{{ node.label }}</span>
+                        </span>
+                <div class="fr">
+                          <span class="treeRinfo">
+                            <div class="treeRinfo">
+                              <span>{{departData.companyManage}}</span>
+                              <span>在职  <em class="colGreen" title="在职人数">---</em>&nbsp;&nbsp;(<em class="colGreen" title="正式员工">---</em>&nbsp;/&nbsp;<em class="colRed" title="非正式员工">---</em>)</span>
+                            </div>
+                            <div class="treeRinfo">
+                              <el-dropdown class="item">
+                                <span class="el-dropdown-link">
+                                  操作<i class="el-icon-arrow-down el-icon--right"></i>
+                                </span>
+                                <el-dropdown-menu slot="dropdown">
+                                    <el-dropdown-item>
+                                      <el-button type="text" @click="handlAdd(data.id)">添加子部门</el-button>
+                                    </el-dropdown-item>
+                                    <el-dropdown-item>
+                                      <el-button type="text" @click="handUpdate(data.id)">查看部门</el-button>
+                                    </el-dropdown-item>
+                                  <el-dropdown-item>
+                                    <el-button type="text" @click="handleList()">查看待分配员工</el-button>
+                                  </el-dropdown-item>
+                                  <el-dropdown-item>
+                                    <el-button type="text" @click="handleDelete(data.id)">删除部门</el-button>
+                                  </el-dropdown-item>
+                                </el-dropdown-menu>
+                              </el-dropdown>
+                            </div>
+                          </span>
+                </div>
+              </div>
+            </el-tree>
+          </div>
+        </div>
       </el-card>
     </div>
-</div>
+    <!--:visible.sync 是否显示 -->
+    <!--引入组件-->
+    <component v-bind:is="deptAdd" ref="addDept"></component>
+  </div>
 </template>
 
 <!-- 引入组件 -->
 <script>
+  import {list, saveOrupdate, find, deleteById} from "@/api/base/hrmOrg"
 import commonApi from '@/utils/common'
 export default {
   data() {
@@ -73,8 +119,17 @@ export default {
     }
   },
   methods: {
+    // 构造查询方法
+    getList() {
+      list().then(res => {
+        this.departData = res.data.data
+        // 将普通的数据转化为父子接口
+        this.depts = commonApi.transformTozTreeFormat(res.data.data.depts)
+      })
+    }
   },
   created: function() {
+    this.getList()
   }
 }
 </script>
