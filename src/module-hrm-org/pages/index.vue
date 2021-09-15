@@ -110,15 +110,51 @@
 <script>
   import {list, saveOrupdate, find, deleteById} from "@/api/base/hrmOrg"
 import commonApi from '@/utils/common'
+  import deptAdd from './../components/add'
 export default {
+  components: {deptAdd},
   data() {
     return {
+      deptAdd: 'deptAdd',
       activeName: 'first',
       departData: {},
       depts: []
     }
   },
   methods: {
+    // 添加部门
+    handlAdd(parentId) {
+      // 父页面调用子组件中的内容
+      this.$refs.addDept.parentId = parentId
+      this.$refs.addDept.dialogFormVisible = true
+    },
+    // 查看部门
+    handUpdate(id) {
+      // 根据id查询部门
+      find({id: id}).then(res => {
+        // 数据绑定到dept对象中
+        this.$refs.addDept.dept = res.data.data;
+        this.$refs.addDept.dialogFormVisible = true
+      })
+    },
+
+    handleDelete(id) {
+      this.$confirm('是否删除此条记录?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        deleteById({id: id}).then(res => {
+          this.$message({
+            message: res.data.message,
+            type: res.data.success ? 'success' : 'error'
+          })
+          if (res.data.success) {
+            location.reload()
+          }
+        })
+      })
+    },
     // 构造查询方法
     getList() {
       list().then(res => {
