@@ -15,8 +15,8 @@
   </div>
 </template>
 <script>
-import {findAll} from '@/api/base/role'
-import {assignRoles, detail} from '@/api/base/users'
+import {findAll} from '@/api/base/hrmRole'
+import {assignRoles, detail} from '@/api/base/hrmEmp'
 export default {
     data () {
         return {

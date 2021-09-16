@@ -35,7 +35,7 @@
                     </el-form-item>
                       <el-form-item>
                         <el-button type="primary" @click="saveData">更新</el-button>
-                        <router-link :to="{'path':'/employees/index'}" class="el-button el-button--text el-button--small">
+                        <router-link :to="{'path':'/emp/index'}" class="el-button el-button--text el-button--small">
                           取消
                         </router-link>
                       </el-form-item>

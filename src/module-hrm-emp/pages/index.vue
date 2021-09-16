@@ -21,10 +21,10 @@
           </span>
         </span>
         <div class="fr">
-            <router-link :to="{'path':'/employees/import/',query: {name: '员工'}}" class="el-button el-button--primary el-button--mini" title="导入">导入</router-link>
+            <router-link :to="{'path':'/emp/import/',query: {name: '员工'}}" class="el-button el-button--primary el-button--mini" title="导入">导入</router-link>
             <el-button type="primary" size="mini" title="设置">设置</el-button>
-            <router-link :to="{'path':'/employees/archiving/'}" class="el-button el-button--primary el-button--mini" title="历史归档">历史归档</router-link>
-            <router-link :to="{'path':'/employees/report/1'}" class="el-button el-button--primary el-button--mini" >1月份报表</router-link>
+            <router-link :to="{'path':'/emp/archiving/'}" class="el-button el-button--primary el-button--mini" title="历史归档">历史归档</router-link>
+            <router-link :to="{'path':'/emp/report/1'}" class="el-button el-button--primary el-button--mini" >1月份报表</router-link>
             <el-button  type="primary" size="mini" icon="el-icon-plus" @click="handlAdd">新增员工</el-button>
         </div>
       </el-card>
@@ -49,7 +49,7 @@
           </el-table-column>
           <el-table-column fixed="right" label="操作" align="center" width="220">
             <template slot-scope="scope">
-              <router-link :to="{'path':'/employees/details/' + scope.row.id}" class="el-button el-button--text el-button--small">
+              <router-link :to="{'path':'/emp/details/' + scope.row.id}" class="el-button el-button--text el-button--small">
                 查看
               </router-link>
               <el-button @click="handleRole(scope.row)" type="text" size="small">分配角色</el-button>
@@ -66,6 +66,7 @@
         <!-- 新增员工弹层 -->
         <component v-bind:is="employeesAdd" ref="addUser" @doQuery="doQuery"></component>
         <!--分配角色组件 -->
+        <component v-bind:is="addRole" ref="addRole"></component>
 
       </el-card>
     </div>
