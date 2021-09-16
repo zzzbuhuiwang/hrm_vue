@@ -77,15 +77,18 @@ import constantApi from '@/api/constant/employees'
 import {list, remove} from '@/api/base/hrmEmp'
 import PageTool from './../../components/page/page-tool'
 import employeesAdd from './../components/add'
+import addRole from './../components/addRole'
 export default {
   name: 'employeesList',
   components: {
     PageTool,
-    employeesAdd
+    employeesAdd,
+    addRole
   },
   data() {
     return {
       employeesAdd: 'employeesAdd',
+      addRole: 'addRole',
       baseData: constantApi,
       dataList: [],
       counts: '',
@@ -134,6 +137,9 @@ export default {
               this.doQuery()
             })
         })
+    },
+    handleRole(item) {
+      this.$refs.addRole.toAssignPrem(item.id)
     }
   },
   // 创建完毕状态
